@@ -231,7 +231,7 @@
     <script type="text/javascript" src="assets/leaflet/plugins/leaflet.markercluster/leaflet.markercluster.js"></script>
 
     <script type="text/javascript">
-      var map, newUser, users, mapquest, firstLoad;
+      var map, newUser, users, mapbox, firstLoad;
 
       firstLoad = true;
 
@@ -239,16 +239,17 @@
       users = new L.MarkerClusterGroup({spiderfyOnMaxZoom: true, showCoverageOnHover: false, zoomToBoundsOnClick: true});
       newUser = new L.LayerGroup();
 
-      mapquest = new L.TileLayer("http://{s}.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png", {
-        maxZoom: 18,
-        subdomains: ["otile1", "otile2", "otile3", "otile4"],
-        attribution: 'Basemap tiles courtesy of <a href="http://www.mapquest.com/" target="_blank">MapQuest</a> <img src="http://developer.mapquest.com/content/osm/mq_logo.png">. Map data (c) <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> contributors, CC-BY-SA.'
-      });
+	var mbAttr = 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+			'<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+			'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+		mbUrl = 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw';
+
+	var mapbox   = L.tileLayer(mbUrl, {id: 'mapbox.light', attribution: mbAttr}),
 
       map = new L.Map('map', {
         center: new L.LatLng(39.90973623453719, -93.69140625),
         zoom: 3,
-        layers: [mapquest, users, newUser]
+        layers: [mapbox, users, newUser]
       });
 
       // GeoLocation Control
